@@ -6,20 +6,24 @@ export default `
     margin: 0 auto;
   }
 
-  .checkbox {
+  .visuallyhidden {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  .checkbox label {
+    display: inline-block;
     position: relative;
-  }
-
-  .checkbox input[type="checkbox"] {
     width: 32px;
-    margin: 0;
+    height: 32px;
+    cursor: pointer;
   }
 
-  .checkbox input + svg {
+  .checkbox label svg {
     display: none;
   }
 
-  .checkbox--is-checked input + svg {
+  .checkbox--is-checked label svg {
     display: block;
     position: absolute;
     top: 8px;

@@ -37,7 +37,7 @@ const validationField = (type, { id }, validationConfig) => {
     const table = base.getTableByIdIfExists(tableId);
     // If table is null or undefined, the FieldPicker will not render.
     return (
-      <select>
+      <select name={fieldName('theField')}>
         {table.fields.map(field => {
           if (field.type === 'date' && field.id !== id) {
             return <option value={field.id}>{field.name}</option>;
@@ -79,7 +79,7 @@ const validationField = (type, { id }, validationConfig) => {
 
             <div className="fields" style={{ justifyContent: 'space-between' }}>
               <label>
-                A record:
+                A field:
                 <input type="radio" name={fieldName('date')} value="dateField" defaultChecked={validationConfig.date === 'dateField'} onChange={event => setDateOrigin(event.target.value)} />
               </label>
               <label>
@@ -131,6 +131,17 @@ const validationField = (type, { id }, validationConfig) => {
         </div>
       </div>
     );
+    case 'lengthNum': return (
+      <div className="rule">
+        <Heading size="xsmall">Min/Max</Heading>
+        <Text textColor="light">Set the minimum and maximum that can be entered. You don't need to set both fields.</Text>
+        <div className="fields">
+          <input type="tel" name={fieldName('min')} defaultValue={validationConfig.min} placeholder="Min e.g. 6" pattern="[0-9]+" onInvalid={customError('Numbers only please')} />
+          <span>to</span>
+          <input type="tel" name={fieldName('max')} defaultValue={validationConfig.max} placeholder="Max e.g. 12" pattern="[0-9]+" onInvalid={customError('Numbers only please')} />
+        </div>
+      </div>
+    );
     case 'pattern': return (
       <div className="rule">
         <Heading size="xsmall">Custom value</Heading>
@@ -163,18 +174,18 @@ const FieldConfig = ({ field, validationConfig }) => {
   // case FieldType.MULTIPLE_ATTACHMENTS: validations = null; break;
   // case FieldType.MULTIPLE_COLLABORATORS: validations = null; break;
   // case FieldType.MULTIPLE_LOOKUP_VALUES: validations = null; break;
-  // case FieldType.MULTIPLE_RECORD_LINKS: validations = ['required']; break;
+  case FieldType.MULTIPLE_RECORD_LINKS: validations = ['required']; break;
   // case FieldType.MULTIPLE_SELECTS: validations = null; break;
-  // case FieldType.NUMBER: validations = null; break;
-  // case FieldType.PERCENT: validations = null; break;
-  // case FieldType.PHONE_NUMBER: validations = null; break;
-  // case FieldType.RATING: validations = null; break;
+  case FieldType.NUMBER: validations = ['required', 'lengthNum']; break;
+  case FieldType.PERCENT: validations = ['required']; break;
+  case FieldType.PHONE_NUMBER: validations = ['required']; break;
+  case FieldType.RATING: validations = ['required']; break;
   // case FieldType.RICH_TEXT: validations = null; break;
   // case FieldType.ROLLUP: validations = null; break;
   // case FieldType.SINGLE_COLLABORATOR: validations = null; break;
   case FieldType.SINGLE_LINE_TEXT: validations = ['required', 'length']; break;
   case FieldType.SINGLE_SELECT: validations = ['required']; break;
-  // case FieldType.URL: validations = null; break;
+  case FieldType.URL: validations = ['required']; break;
   default: validations = null;
   }
 

@@ -8,6 +8,7 @@ import {
   Box
 } from '@airtable/blocks/ui';
 import React, { useState } from 'react';
+import PubSub from 'pubsub-js';
 import getFieldLabel from '../../helpers/getFieldLabel';
 import removeDuplicates from '../../helpers/removeDuplicates';
 
@@ -21,7 +22,7 @@ const RecordList = ({ field, validationConfig }) => {
   const [showRecords, setShowRecords] = useState(false);
   const [selectedRecords, setSelectedRecords] = useState([]);
 
-  window.addEventListener('resetForm', () => {
+  PubSub.subscribe('resetForm', () => {
     setShowRecords(false);
     setSelectedRecords([]);
   });
@@ -31,11 +32,11 @@ const RecordList = ({ field, validationConfig }) => {
 
   return (
     <FormField label={getFieldLabel(field, validationConfig)}>
+      <input className="visuallyhidden" name={field.name} data-multiple-record-links required={validationConfig.required} defaultValue={selectedRecords.map(record => record.id).join(',')} />
+
       {selectedRecords.length > 0 && (
         <React.Fragment>
           <Text textColor="light">Click record to remove.</Text>
-
-          <input type="hidden" name={field.name} data-multiple-record-links required={validationConfig.required} defaultValue={selectedRecords.map(record => record.id).join(',')} />
 
           <Box height={`${Math.min(selectedRecords.length * 100, 300)}px`} border="thick" backgroundColor="lightGray1" marginTop={2} marginBottom={2}>
             <RecordCardList records={selectedRecords} onRecordClick={record => {

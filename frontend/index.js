@@ -14,6 +14,7 @@ import {
   Box,
 } from '@airtable/blocks/ui';
 import React, { useState } from 'react';
+import PubSub from 'pubsub-js';
 
 import { createRecord } from './api/table';
 import FieldConfig from './components/FieldConfig';
@@ -62,6 +63,7 @@ const SexyFormBlock = () => {
 
   const [feedback, setFeedback] = useState('');
   const [view, setView] = useState(hasConfiguration ? VIEWS.form : VIEWS.settings);
+  const [sharedState, setSharedState] = useState({});
 
   if (!table) {
     return (
@@ -74,7 +76,7 @@ const SexyFormBlock = () => {
     );
   }
 
-  // console.log({ table, validationConfig, fields: table.fields })
+  console.log({ table, validationConfig, fields: table.fields })
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -94,6 +96,7 @@ const SexyFormBlock = () => {
 
     setFeedback(<Loader />);
 
+    console.log({ json });
     // return console.log({ json });
     
     createRecord(table, json, () => {
@@ -101,29 +104,8 @@ const SexyFormBlock = () => {
       setTimeout(() => setFeedback(''), 2000);
 
       form.reset();
-      // reset React inputs
-      // https://github.com/facebook/react/issues/11488#issuecomment-347775628
-      fieldsArray.forEach(input => {
-        let lastValue = input.value;
-        
-        if (input.type === 'checkbox') {
-          input.checked = false;
-        } else {
-          input.value = '';
-        }
-
-        const theEvent = new Event('input', { bubbles: true });
-        // hack
-        theEvent.simulated = true;
-        // hack
-        let tracker = input._valueTracker;
-        if (tracker) {
-          tracker.setValue(lastValue);
-        }
-        input.dispatchEvent(theEvent);
-
-        window.dispatchEvent(new CustomEvent('resetForm'));
-      })
+      PubSub.publish('resetForm');
+      window.scrollTo(0, 0);
     });
   };
 
@@ -151,6 +133,7 @@ const SexyFormBlock = () => {
     setFeedback('Config saved');
     setTimeout(() => setFeedback(''), 2000);
     setView(VIEWS.form);
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -174,7 +157,11 @@ const SexyFormBlock = () => {
             {table.fields.map(field => {
               const validationRules = validationConfig[field.id] || {};
               return (
-                <FieldControl key={field.id} field={field} validationConfig={validationRules} />
+                <FieldControl key={field.id} field={field} validationConfig={validationRules} sharedState={sharedState} setSharedState={(value) => {
+                  console.log('calling top leve setSharedState');
+                  setSharedState(value);
+                  PubSub.publish('updatedState', value);
+                }} />
               );
             })}
 
@@ -205,6 +192,8 @@ const SexyFormBlock = () => {
               const validationRules = validationConfig[field.id] || {};
               return (<FieldConfig key={field.id} field={field} validationConfig={validationRules} />)
             })}
+
+            <Text textColor="light" marginTop={3}>Fin.</Text>
           </form>
         </Box>
       )}

@@ -46,7 +46,7 @@ const RecordList = ({ field, validationConfig }) => {
         </React.Fragment>
       )}
 
-      <TextButton icon="plus" onClick={() => setShowRecords(true)} style={{ display: 'inline' }}>Link to a record from Related</TextButton>
+      <TextButton icon="plus" onClick={() => setShowRecords(true)} style={{ display: 'inline' }}>Link to a record from {table.name}</TextButton>
 
       {showRecords && (
         <Box height={`${Math.min(filteredRecords.length * 100, 300)}px`} border="thick" backgroundColor="lightGray1" marginTop={2}>

@@ -13,8 +13,6 @@ const relativeDays = (date, numDays) => {
 
 const DateField = ({ field, validationConfig }) => {
   const [value, setValue] = useState('');
-
-  console.log('DateField', validationConfig);
   
   let min, max;
 

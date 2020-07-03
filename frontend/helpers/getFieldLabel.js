@@ -1,0 +1,1 @@
+export default (field, validationConfig) => `${field.name}${validationConfig.required? ' *' : ''}`;

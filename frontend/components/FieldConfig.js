@@ -173,7 +173,7 @@ const FieldConfig = ({ field, validationConfig }) => {
   // case FieldType.ROLLUP: validations = null; break;
   // case FieldType.SINGLE_COLLABORATOR: validations = null; break;
   case FieldType.SINGLE_LINE_TEXT: validations = ['required', 'length']; break;
-  // case FieldType.SINGLE_SELECT: validations = ['required']; break;
+  case FieldType.SINGLE_SELECT: validations = ['required']; break;
   // case FieldType.URL: validations = null; break;
   default: validations = null;
   }
@@ -185,7 +185,7 @@ const FieldConfig = ({ field, validationConfig }) => {
       border="default"
       backgroundColor="white"
       padding={3}
-      style={{ marginBottom: "16px" }}
+      marginTop={3}
     >
       <Heading className="with-icon"><FieldIcon field={field} /> {field.name}</Heading>
       

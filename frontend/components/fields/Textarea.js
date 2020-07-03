@@ -10,6 +10,7 @@ const Textarea = ({ field, validationConfig }) => {
     >
       <textarea
         id={field.name}
+        className="airtable-input"
         name={field.name}
         minLength={validationConfig.minLength}
         maxLength={validationConfig.maxLength}

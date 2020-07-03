@@ -45,6 +45,7 @@ const DateField = ({ field, validationConfig }) => {
     <FormField label={getFieldLabel(field, validationConfig)}>
       <input
         type="date"
+        className="airtable-input"
         name={field.name}
         min={min}
         max={max}

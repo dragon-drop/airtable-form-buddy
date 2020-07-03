@@ -5,7 +5,7 @@ import { FieldType } from '@airtable/blocks/models';
 import Checkbox from './fields/Checkbox';
 import Date from './fields/Date';
 import Email from './fields/Email';
-// import Select from './fields/Select';
+import Select from './fields/Select';
 import SingleLineText from './fields/SingleLineText';
 import Textarea from './fields/Textarea';
 import RecordList from './fields/RecordList';
@@ -45,7 +45,7 @@ const FieldControl = ({ field, validationConfig }) => {
   // case FieldType.ROLLUP: return null;
   // case FieldType.SINGLE_COLLABORATOR: return null;
   case FieldType.SINGLE_LINE_TEXT: return <SingleLineText field={field} validationConfig={validationConfig} />;
-  // case FieldType.SINGLE_SELECT: return <Select field={field} />;
+  case FieldType.SINGLE_SELECT: return <Select field={field} validationConfig={validationConfig} />;
   // case FieldType.URL: return null;
   default: return null
   }

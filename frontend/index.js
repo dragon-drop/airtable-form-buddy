@@ -9,6 +9,7 @@ import {
   Loader,
   Button,
   colors,
+  Text,
   Icon,
   Box,
 } from '@airtable/blocks/ui';
@@ -82,10 +83,18 @@ const SexyFormBlock = () => {
     const fields = form.querySelectorAll('[name]');
     const fieldsArray = Array.from(fields);
     const json = fieldsArray.reduce(
-      (obj, field) => { obj[field.name] = getValueFromField(field); return obj }, {}
+      (obj, field) => {
+        const value = getValueFromField(field);
+        if (value) {
+          obj[field.name] = value;
+        }
+        return obj;
+      }, {}
     );
 
     setFeedback(<Loader />);
+
+    // return console.log({ json });
     
     createRecord(table, json, () => {
       setFeedback('Record created');
@@ -159,9 +168,9 @@ const SexyFormBlock = () => {
 
       {view === VIEWS.form && (
         <Box padding={3}>
-          <form onSubmit={onSubmit}>
-            <p>Fields marked with * are required.</p>
-            
+          <Text textColor="light"><Icon name="info" size={12} /> Fields marked with * are required.</Text>
+        
+          <form className="spaced" onSubmit={onSubmit}>
             {table.fields.map(field => {
               const validationRules = validationConfig[field.id] || {};
               return (
@@ -178,7 +187,7 @@ const SexyFormBlock = () => {
         <Box padding={3} backgroundColor={colors.GRAY_LIGHT_2}>
 
           {!hasConfiguration && (
-            <ColouredBox colour={colors.BLUE_LIGHT_2} padding={3}>
+            <ColouredBox colour={colors.BLUE_LIGHT_2} padding={3} marginBottom={3}>
               <div className="message">
                 <Icon name="info" size={16} />
                 <div>
@@ -190,12 +199,12 @@ const SexyFormBlock = () => {
           )}
 
           <form onSubmit={savePreferences}>
+            <Button type="submit" variant="primary">Save rules</Button>
+
             {table.fields.map(field => {
               const validationRules = validationConfig[field.id] || {};
               return (<FieldConfig key={field.id} field={field} validationConfig={validationRules} />)
             })}
-            
-            <Button type="submit" variant="primary">Save preferences</Button>
           </form>
         </Box>
       )}

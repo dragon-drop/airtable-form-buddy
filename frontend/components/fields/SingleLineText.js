@@ -20,7 +20,6 @@ const SingleLineText = ({ field, validationConfig }) => {
         pattern={patternConfig.regex}
         value={value}
         onChange={e => {
-          console.log('SingleLineText onChange', e.target.value, e)
           setValue(e.target.value)
         }}
       />

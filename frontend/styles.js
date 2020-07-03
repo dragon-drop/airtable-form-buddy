@@ -27,20 +27,6 @@ export default `
     pointer-events: none;
   }
 
-  textarea {
-    width: 100% !important;
-    min-height: 72px !important;
-    height: auto !important;
-    padding: 1rem;
-    margin: 0;
-    border: none;
-    border-radius: 3px;
-    
-    line-height: 1.7;
-    color: hsl(0,0%,20%);
-    background: hsl(0,0%,95%);
-  }
-
   .notification {
     position: fixed;
     top: 16px;
@@ -102,5 +88,35 @@ export default `
     height: 32px;
     line-height: 32px;
     padding: 0 6px;
+  }
+
+  .airtable-input {
+    height: 32px;
+    line-height: 21px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
+    border: none;
+    border-radius: 3px;
+    
+    color: hsl(0,0%,20%);
+    background: hsl(0,0%,95%);
+  }
+
+  textarea.airtable-input {
+    width: 100% !important;
+    min-height: 72px !important;
+    height: auto !important;
+    line-height: 1.7;
+    padding: 1rem;
+  }
+
+  form.spaced,
+  form.spaced > * + * {
+    margin-top: 32px;
+  }
+
+  form.spaced > *:last-child {
+    margin-top: 0;
   }
 `

@@ -97,4 +97,10 @@ export default `
   .fields > * + * {
     margin-left: .5em;
   }
+
+  .fields input[type="text"], .fields input[type="tel"], .fields select {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 6px;
+  }
 `

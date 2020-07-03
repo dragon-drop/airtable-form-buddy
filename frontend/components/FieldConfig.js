@@ -97,9 +97,7 @@ const validationField = (type, { id }, validationConfig) => {
           <React.Fragment>
             <Text textColor="light" style={{ marginTop: '16px' }}>3. Specify the field.</Text>
             <div className="fields">
-              <label>
-                <FieldChooser />
-              </label>
+              <FieldChooser />
             </div>
           </React.Fragment>
         )}
@@ -107,9 +105,7 @@ const validationField = (type, { id }, validationConfig) => {
           <React.Fragment>
             <Text textColor="light" style={{ marginTop: '16px' }}>3. Specify the date.</Text>
             <div className="fields">
-              <label>
-                <input type="date" name={fieldName('theDate')} defaultValue={validationConfig.theDate} />
-              </label>
+              <input type="date" name={fieldName('theDate')} defaultValue={validationConfig.theDate} />
             </div>
           </React.Fragment>
         )}
@@ -156,26 +152,18 @@ const FieldConfig = ({ field, validationConfig }) => {
   let validations = null;
 
   switch (type) {
-  // case FieldType.AUTO_NUMBER: validations = null; break;
-  case FieldType.BARCODE: validations = ['required', 'length']; break;
-  // case FieldType.BUTTON: validations = null; break;
-  case FieldType.CHECKBOX: validations = ['required']; break;
-  // case FieldType.COUNT: validations = null; break;
-  // case FieldType.CREATED_BY: validations = null; break;
-  // case FieldType.CREATED_TIME: validations = null; break;
+  // case FieldType.BARCODE: validations = ['required', 'length']; break;
+  // case FieldType.CHECKBOX: validations = ['required']; break;
   // case FieldType.CURRENCY: validations = null; break;
-  case FieldType.DATE: validations = ['required', 'dateRange']; break;
+  // case FieldType.DATE: validations = ['required', 'dateRange']; break;
   // case FieldType.DATE_TIME: validations = null; break;
   // case FieldType.DURATION: validations = null; break;
-  case FieldType.EMAIL: validations = ['required']; break;
-  // case FieldType.FORMULA: validations = null; break;
-  // case FieldType.LAST_MODIFIED_BY: validations = null; break;
-  // case FieldType.LAST_MODIFIED_TIME: validations = null; break;
-  case FieldType.MULTILINE_TEXT: validations = ['required', 'length']; break;
+  // case FieldType.EMAIL: validations = ['required']; break;
+  // case FieldType.MULTILINE_TEXT: validations = ['required', 'length']; break;
   // case FieldType.MULTIPLE_ATTACHMENTS: validations = null; break;
   // case FieldType.MULTIPLE_COLLABORATORS: validations = null; break;
   // case FieldType.MULTIPLE_LOOKUP_VALUES: validations = null; break;
-  // case FieldType.MULTIPLE_RECORD_LINKS: validations = null; break;
+  case FieldType.MULTIPLE_RECORD_LINKS: validations = ['required']; break;
   // case FieldType.MULTIPLE_SELECTS: validations = null; break;
   // case FieldType.NUMBER: validations = null; break;
   // case FieldType.PERCENT: validations = null; break;
@@ -184,8 +172,8 @@ const FieldConfig = ({ field, validationConfig }) => {
   // case FieldType.RICH_TEXT: validations = null; break;
   // case FieldType.ROLLUP: validations = null; break;
   // case FieldType.SINGLE_COLLABORATOR: validations = null; break;
-  case FieldType.SINGLE_LINE_TEXT: validations = ['required', 'length']; break;
-  case FieldType.SINGLE_SELECT: validations = ['required']; break;
+  // case FieldType.SINGLE_LINE_TEXT: validations = ['required', 'length']; break;
+  // case FieldType.SINGLE_SELECT: validations = ['required']; break;
   // case FieldType.URL: validations = null; break;
   default: validations = null;
   }

@@ -60,7 +60,7 @@ const SexyFormBlock = () => {
   const hasConfiguration = Object.keys(validationConfig).length > 0;
 
   const [feedback, setFeedback] = useState('');
-  const [view, setView] = useState(!hasConfiguration ? VIEWS.form : VIEWS.settings);
+  const [view, setView] = useState(hasConfiguration ? VIEWS.form : VIEWS.settings);
 
   if (!table) {
     return (
@@ -73,9 +73,7 @@ const SexyFormBlock = () => {
     );
   }
 
-  console.log({ table, validationConfig })
-
-  // table.fields.forEach(field => console.log(field));
+  // console.log({ table, validationConfig, fields: table.fields })
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -114,6 +112,8 @@ const SexyFormBlock = () => {
           tracker.setValue(lastValue);
         }
         input.dispatchEvent(theEvent);
+
+        window.dispatchEvent(new CustomEvent('resetForm'));
       })
     });
   };

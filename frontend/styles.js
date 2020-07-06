@@ -15,6 +15,10 @@ export default `
     clip: rect(1px, 1px, 1px, 1px);
     white-space: nowrap; /* added line */
   }
+
+  .wrapper {
+    transform: translateZ(0);
+  }
   
   .checkbox label {
     display: inline-block;
@@ -48,18 +52,51 @@ export default `
     opacity: 1;
   }
 
+  @keyframes slide-in {
+    0% {
+      transform: translate3d(0, -60px, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(0, -60px, 0);
+    }
+  }
+
   .notification {
     position: fixed;
-    top: 16px;
-    right: 16px;
+    top: 8px;
+    right: 8px;
     z-index: 100;
 
     max-width: 320px;
-    padding: 16px;
-    border-radius: 6px;
+    padding: 12px 18px;
+    border-radius: 4px;
 
-    background-color: rgb(255, 255, 255);
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 2px;
+    font-size: 13px;
+    line-height: 18px;
+    color: #f6f6f6;
+    background: hsl(0,0%,20%);
+
+    animation: slide-in 0.2s ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  .notification--timesout {
+    animation: slide-out 0.2s ease-out;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+  }
+
+  .notification svg {
+    display: block;
   }
 
   .message {

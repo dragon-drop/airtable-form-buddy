@@ -14,7 +14,8 @@ import { patterns } from '../helpers/getPattern';
 
 const customError = (message) => event => event.target.setCustomValidity(message)
 
-const validationField = (type, { id }, validationConfig) => {
+const ValidationField = ({ type, field, validationConfig }) => {
+  const { id } = field;
   const value = validationConfig[type];
   const fieldName = (name) => `${id}[${name}]`;
 
@@ -116,7 +117,7 @@ const validationField = (type, { id }, validationConfig) => {
   switch (type) {
     case 'required': return (
       <div className="rule">
-        <Heading size="xsmall">Required? <input type="checkbox" name={fieldName('required')} defaultChecked={value} /></Heading>
+        <label><Heading size="xsmall">Required? <input type="checkbox" name={fieldName('required')} defaultChecked={value} /></Heading></label>
         <Text textColor="light">If required you won't be able to submit the form without completing this field.</Text>
       </div>
     );
@@ -200,7 +201,7 @@ const FieldConfig = ({ field, validationConfig }) => {
     >
       <Heading className="with-icon"><FieldIcon field={field} /> {field.name}</Heading>
       
-      {validations.map(validation => validationField(validation, field, validationConfig))}
+      {validations.map(validation => <ValidationField key={validation} type={validation} field={field} validationConfig={validationConfig} />)}
     </Box>
   );
 };

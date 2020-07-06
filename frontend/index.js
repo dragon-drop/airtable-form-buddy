@@ -1,10 +1,9 @@
 import {
+  useSettingsButton,
   loadCSSFromString,
   initializeBlock,
   useGlobalConfig,
-  SelectButtons,
   TablePicker,
-  colorUtils,
   useBase,
   Loader,
   Button,
@@ -12,45 +11,22 @@ import {
   Text,
   Icon,
   Box,
+  Heading,
 } from '@airtable/blocks/ui';
 import React, { useState } from 'react';
 import PubSub from 'pubsub-js';
 
 import { createRecord } from './api/table';
+import ColouredBox from './components/ColouredBox';
 import FieldConfig from './components/FieldConfig';
 import FieldControl from './components/FieldControl';
+import PermissionsError from './components/PermissionsError';
+import ViewSwitcher, { VIEWS } from './components/ViewSwitcher';
 import getValueFromField from './helpers/getValueFromField';
+import scrollTop from './helpers/scrollTop';
 
 import styles from './styles.js';
 loadCSSFromString(styles);
-
-const ColouredBox = ({ colour, children, ...opts }) => {
-  return (
-    <Box backgroundColor={colour} style={{ color: colorUtils.shouldUseLightTextOnColor(colour) ? 'white' : 'inherit' }} {...opts}>
-      {children}
-    </Box>
-  );
-};
-
-const VIEWS = {
-  form: 'form',
-  settings: 'settings'
-};
-
-const ViewSwitcher = ({ value, onChange }) => {
-  const options = [
-    { value: VIEWS.form, label: 'Form' },
-    { value: VIEWS.settings, label: 'Validation rules' }
-  ];
-
-  return (
-    <SelectButtons
-      value={value}
-      onChange={onChange}
-      options={options}
-    />
-  );
-};
 
 const SexyFormBlock = () => {
   const base = useBase();
@@ -61,9 +37,30 @@ const SexyFormBlock = () => {
   const validationConfig = globalConfig.get(`validationConfig-${tableId}`) || {};
   const hasConfiguration = Object.keys(validationConfig).length > 0;
 
-  const [feedback, setFeedback] = useState('');
-  const [view, setView] = useState(hasConfiguration ? VIEWS.form : VIEWS.settings);
+  const [feedback, setFeedback] = useState({});
+  const [isShowingSettings, setIsShowingSettings] = useState(!hasConfiguration);
+  useSettingsButton(() => {
+    setIsShowingSettings(true);
+    scrollTop();
+  });
+
   const [sharedState, setSharedState] = useState({});
+  let permissionsError = '';
+  const checkPermissions = permissionObject => {
+    if (!permissionObject.hasPermission) {
+      permissionsError = permissionObject.reasonDisplayString;
+    }
+  };
+
+  checkPermissions(globalConfig.checkPermissionsForSet('selectedTableId'));
+
+  if (table) {
+    checkPermissions(table.checkPermissionsForCreateRecords());
+  }
+
+  if (permissionsError) {
+    return <PermissionsError message={permissionsError} />
+  }
 
   if (!table) {
     return (
@@ -76,7 +73,7 @@ const SexyFormBlock = () => {
     );
   }
 
-  // console.log({ table, validationConfig, fields: table.fields })
+  console.log({ base, table, validationConfig, fields: table.fields })
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -94,18 +91,17 @@ const SexyFormBlock = () => {
       }, {}
     );
 
-    setFeedback(<Loader />);
+    setFeedback({ message: <Loader /> });
 
     // console.log({ json });
     // return console.log({ json });
     
     createRecord(table, json, () => {
-      setFeedback('Record created');
-      setTimeout(() => setFeedback(''), 2000);
+      setFeedback({ message: 'Record created', timesout: true });
 
       form.reset();
       PubSub.publish('resetForm');
-      window.scrollTo(0, 0);
+      scrollTop();
     });
   };
 
@@ -126,30 +122,31 @@ const SexyFormBlock = () => {
       }, {}
     );
 
-    setFeedback(<Loader />);
+    setFeedback({ message: <Loader /> });
 
     await globalConfig.setAsync(`validationConfig-${tableId}`, json);
 
-    setFeedback('Config saved');
-    setTimeout(() => setFeedback(''), 2000);
-    setView(VIEWS.form);
-    window.scrollTo(0, 0);
+    setFeedback({ message: 'Config saved', timesout: true });
+    setIsShowingSettings(false);
+    scrollTop();
   };
 
   return (
     <div className="wrapper">
-      {feedback ? <div className="notification">{feedback}</div> : null}
+      {feedback.message ? <div className={`notification${feedback.timesout? ' notification--timesout': ''}`}>{feedback.message}</div> : null}
+
       <Box padding={3}>
         <TablePicker
           table={table}
           onChange={newTable => globalConfig.setAsync('selectedTableId', newTable.id)}
-          style={{ fontSize: '20px' }}
         />
 
-        <ViewSwitcher value={view} onChange={view => setView(view)} />
+        <Heading marginTop={3}>{table.name}</Heading>
+
+        <ViewSwitcher value={isShowingSettings ? VIEWS.settings : VIEWS.form} onChange={view => setIsShowingSettings(view === VIEWS.settings)} />
       </Box>
 
-      {view === VIEWS.form && (
+      {!isShowingSettings && (
         <Box padding={3}>
           <Text textColor="light"><Icon name="info" size={12} /> Fields marked with * are required.</Text>
         
@@ -169,7 +166,7 @@ const SexyFormBlock = () => {
         </Box>
       )}
 
-      {view === VIEWS.settings && (
+      {isShowingSettings && (
         <Box padding={3} backgroundColor={colors.GRAY_LIGHT_2}>
 
           {!hasConfiguration && (

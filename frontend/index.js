@@ -76,7 +76,7 @@ const SexyFormBlock = () => {
     );
   }
 
-  console.log({ table, validationConfig, fields: table.fields })
+  // console.log({ table, validationConfig, fields: table.fields })
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -86,7 +86,7 @@ const SexyFormBlock = () => {
     const fieldsArray = Array.from(fields);
     const json = fieldsArray.reduce(
       (obj, field) => {
-        const value = getValueFromField(field);
+        const value = getValueFromField(field, obj[field.name]);
         if (value) {
           obj[field.name] = value;
         }
@@ -96,7 +96,7 @@ const SexyFormBlock = () => {
 
     setFeedback(<Loader />);
 
-    console.log({ json });
+    // console.log({ json });
     // return console.log({ json });
     
     createRecord(table, json, () => {
@@ -158,7 +158,6 @@ const SexyFormBlock = () => {
               const validationRules = validationConfig[field.id] || {};
               return (
                 <FieldControl key={field.id} field={field} validationConfig={validationRules} sharedState={sharedState} setSharedState={(value) => {
-                  console.log('calling top leve setSharedState');
                   setSharedState(value);
                   PubSub.publish('updatedState', value);
                 }} />

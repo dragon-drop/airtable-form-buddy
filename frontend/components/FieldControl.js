@@ -7,6 +7,7 @@ import Date from './fields/Date';
 import Email from './fields/Email';
 import Number from './fields/Number';
 import PhoneNumber from './fields/PhoneNumber';
+import Rating from './fields/Rating';
 import RecordList from './fields/RecordList';
 import Select from './fields/Select';
 import SingleLineText from './fields/SingleLineText';
@@ -48,7 +49,7 @@ const FieldControl = ({ field, validationConfig, sharedState, setSharedState }) 
   case FieldType.NUMBER: return <Number field={field} validationConfig={validationConfig} />;
   case FieldType.PERCENT: return <Number field={field} validationConfig={validationConfig} />;
   case FieldType.PHONE_NUMBER: return <PhoneNumber field={field} validationConfig={validationConfig} />;
-  case FieldType.RATING: return <Select field={field} validationConfig={validationConfig} />;
+  case FieldType.RATING: return <Rating field={field} validationConfig={validationConfig} />;
   // case FieldType.RICH_TEXT: return null;
   // case FieldType.ROLLUP: return null;
   // case FieldType.SINGLE_COLLABORATOR: return null;

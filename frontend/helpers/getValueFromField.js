@@ -9,14 +9,12 @@ const getValueFromField = (field, existingValue) => {
     type = 'percent';
   }
 
-  console.log('getAttribute', field, type);
-
   switch (name) {
   case 'Barcode': return { text: value };
-  case 'Rating': return parseInt(value);
-}
+  case 'Rating': return checked? parseInt(value, 10) : parseInt(existingValue, 10);
+  }
 
-switch (type) {
+  switch (type) {
   case 'checkbox': return checked;
   case 'radio': return checked? value : existingValue;
   case 'select-one': return value ? { id: value } : value;

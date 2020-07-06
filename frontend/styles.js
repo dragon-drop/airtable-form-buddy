@@ -7,8 +7,13 @@ export default `
   }
 
   .visuallyhidden {
-    position: absolute;
-    opacity: 0;
+    position: absolute !important;
+    height: 1px; 
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap; /* added line */
   }
   
   .checkbox label {
@@ -29,6 +34,18 @@ export default `
     top: 8px;
     left: 8px;
     pointer-events: none;
+  }
+
+  .rating .rating__options {
+    display: flex;
+  }
+
+  .rating__options .rating__option {
+    opacity: 0.3;
+  }
+
+  .rating__options .rating__option--selected {
+    opacity: 1;
   }
 
   .notification {

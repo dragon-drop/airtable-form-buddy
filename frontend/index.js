@@ -73,7 +73,7 @@ const SexyFormBlock = () => {
     );
   }
 
-  console.log({ base, table, validationConfig, fields: table.fields })
+  // console.log({ base, table, validationConfig, fields: table.fields })
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -91,6 +91,7 @@ const SexyFormBlock = () => {
       }, {}
     );
 
+    scrollTop();
     setFeedback({ message: <Loader /> });
 
     // console.log({ json });
@@ -101,7 +102,6 @@ const SexyFormBlock = () => {
 
       form.reset();
       PubSub.publish('resetForm');
-      scrollTop();
     });
   };
 

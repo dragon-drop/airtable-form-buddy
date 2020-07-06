@@ -32,7 +32,7 @@ const RecordList = ({ field, validationConfig }) => {
 
   return (
     <FormField label={getFieldLabel(field, validationConfig)}>
-      <input className="visuallyhidden" name={field.name} data-multiple-record-links required={validationConfig.required} defaultValue={selectedRecords.map(record => record.id).join(',')} />
+      <input className="visuallyhidden multiple-records" name={field.name} data-multiple-record-links required={validationConfig.required} defaultValue={selectedRecords.map(record => record.id).join(',')} />
 
       {selectedRecords.length > 0 && (
         <React.Fragment>

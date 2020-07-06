@@ -36,6 +36,7 @@ const SingleLineText = ({ field, validationConfig }) => {
         required={validationConfig.required}
         pattern={patternConfig.regex}
         value={value}
+        className={field.type}
         onChange={e => {
           setValue(e.target.value)
         }}

@@ -35,7 +35,7 @@ const Rating = ({ field, validationConfig }) => {
           name={field.name}
           value={i}
           id={`${field.name}-${i}`}
-          className="visuallyhidden"
+          className="visuallyhidden rating"
           onChange={() => setSelectedIndex(i)}
         />
       </React.Fragment>

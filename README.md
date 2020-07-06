@@ -43,3 +43,9 @@ When happy with changes:
 - `block release` to push it live
 - Test it works
 - Commit and push the changes to source control
+
+---
+
+For support with Form Buddy contact us: support@dragondrop.uk
+
+Need your own Airtable Custom Block? Contact us: hello@dragondrop.uk
